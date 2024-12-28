@@ -29,9 +29,12 @@ public class Ball : MonoBehaviour
     [SerializeField] private  List<PolaritiyType> polarityTypes = new List<PolaritiyType>
         { PolaritiyType.Positive, PolaritiyType.Negative };
     
+    [SerializeField] private float friction = 0.99f;
+    
     private List<Polarity> _polarities = new List<Polarity>();
     private Polarity _currentPolarity;
     private int _currentPolarityIndex = 0;
+    private Rigidbody2D _rb;
     
     private SpriteRenderer _spriteRenderer;
     
@@ -42,13 +45,19 @@ public class Ball : MonoBehaviour
         if (_polarities.Count == 0)
             throw new Exception("No polarities found");
         CurrentPolarityIndex = 0;
+        _rb = GetComponent<Rigidbody2D>();
+    }
+    
+    private void FixedUpdate()
+    {
+        _rb.linearVelocity *= friction;
     }
 
     public void SetColor(Color color)
     {
         _spriteRenderer.color = color;
     }
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CurrentPolarity.InteractWithPocket();

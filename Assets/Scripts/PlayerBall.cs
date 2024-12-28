@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,6 +17,7 @@ public class PlayerBall : MonoBehaviour
     private static Camera _mainCamera;
     
     [SerializeField] private float powerMultiplier = 10f;
+    [SerializeField] private float friction = 0.99f;
     [SerializeField] private Vector2 minPower;
     [SerializeField] private Vector2 maxPower;
     [SerializeField] private LineRenderer predictionLine;
@@ -85,7 +87,12 @@ public class PlayerBall : MonoBehaviour
             ResourcesManager.Tries.Value--;
         }
     }
-    
+
+    private void FixedUpdate()
+    {
+        _rb.linearVelocity *= friction;
+    }
+
     private void RenderPredictionLine(Vector2[] trajectory)
     {
         predictionLine.positionCount = trajectory.Length;

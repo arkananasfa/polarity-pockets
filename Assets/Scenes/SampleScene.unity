@@ -469,6 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   polarityTypes: 0000000001000000
+  friction: 0.99
 --- !u!50 &893109360
 Rigidbody2D:
   serializedVersion: 5
@@ -492,9 +493,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!58 &893109361
 CircleCollider2D:
@@ -732,9 +733,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!58 &1056317555
 CircleCollider2D:
@@ -855,6 +856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   polarityTypes: 0000000001000000
+  friction: 0.99
 --- !u!1 &1162178268
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,6 +892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerMultiplier: 10
+  friction: 0.98
   minPower: {x: -8, y: -8}
   maxPower: {x: 8, y: 8}
   predictionLine: {fileID: 1894159814}
@@ -916,7 +919,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -1289,6 +1292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   polarityTypes: 0000000001000000
+  friction: 0.99
 --- !u!50 &1296677668
 Rigidbody2D:
   serializedVersion: 5
@@ -1312,9 +1316,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!58 &1296677669
 CircleCollider2D:
@@ -1504,6 +1508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   polarityTypes: 0000000001000000
+  friction: 0.99
 --- !u!50 &1498375332
 Rigidbody2D:
   serializedVersion: 5
@@ -1527,9 +1532,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!58 &1498375333
 CircleCollider2D:
@@ -1886,6 +1891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   polarityTypes: 0000000001000000
+  friction: 0.99
 --- !u!50 &1862383638
 Rigidbody2D:
   serializedVersion: 5
@@ -1909,9 +1915,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!58 &1862383639
 CircleCollider2D:
@@ -2052,6 +2058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   polarityTypes: 0000000001000000
+  friction: 0.99
 --- !u!50 &1878438617
 Rigidbody2D:
   serializedVersion: 5
@@ -2075,9 +2082,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!58 &1878438618
 CircleCollider2D:
@@ -2396,6 +2403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   polarityTypes: 0000000001000000
+  friction: 0.99
 --- !u!50 &1976088151
 Rigidbody2D:
   serializedVersion: 5
@@ -2419,9 +2427,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!58 &1976088152
 CircleCollider2D:
@@ -2585,7 +2593,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.48781747}
+  m_Offset: {x: 0.0006735623, y: -0.65467036}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2595,7 +2603,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.024365067}
+  m_Size: {x: 1.4916787, y: 0.35807145}
   m_EdgeRadius: 0
 --- !u!61 &2093285496
 BoxCollider2D:
@@ -2631,7 +2639,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.4937588, y: 0}
+  m_Offset: {x: 0.60691226, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2641,7 +2649,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.0124824345, y: 1}
+  m_Size: {x: 0.23878932, y: 1}
   m_EdgeRadius: 0
 --- !u!61 &2093285497
 BoxCollider2D:
@@ -2677,7 +2685,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.48774976}
+  m_Offset: {x: -0.0060617924, y: 0.73605883}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2687,7 +2695,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.02450049}
+  m_Size: {x: 1.4674315, y: 0.5211179}
   m_EdgeRadius: 0
 --- !u!61 &2093285498
 BoxCollider2D:
@@ -2723,7 +2731,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.4935518, y: 0}
+  m_Offset: {x: -0.61544883, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2733,7 +2741,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.012896389, y: 1}
+  m_Size: {x: 0.25625962, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &2093285499
 Rigidbody2D:
