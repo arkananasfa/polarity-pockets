@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerBall : MonoBehaviour
 {
-
     private static Camera MainCamera
     {
         get
@@ -15,12 +13,13 @@ public class PlayerBall : MonoBehaviour
         }
     }
     private static Camera _mainCamera;
-    
+
     [SerializeField] private float powerMultiplier = 10f;
     [SerializeField] private float friction = 0.99f;
     [SerializeField] private Vector2 minPower;
     [SerializeField] private Vector2 maxPower;
     [SerializeField] private LineRenderer predictionLine;
+    [SerializeField] private float sphereRadius = 0.4f; // Радиус сферы для SphereCast
 
     private Vector2 _force;
     private Vector3 _startPoint;
@@ -45,8 +44,8 @@ public class PlayerBall : MonoBehaviour
             _flag = false;
             return;
         }
-        
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButtonDown(0) && Time.timeScale != 0)
         {
             _startPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _startPoint.z = 15f;
@@ -58,23 +57,19 @@ public class PlayerBall : MonoBehaviour
             Vector3 currentPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _startPoint.z = 15f;
             var endPos = currentPoint - _startPoint + transform.position;
-            // _tl.RenderLine(_startPoint, currentPoint);
             var startPos = transform.position;
             endPos.z = 15f;
             startPos.z = 15f;
             _tl.RenderLine(startPos, endPos);
-            
-            // Рассчитываем силу удара
+
             var diff = _startPoint - currentPoint;
             Vector2 velocity = new Vector2(
                 Mathf.Clamp(diff.x, minPower.x, maxPower.x),
                 Mathf.Clamp(diff.y, minPower.y, maxPower.y)
             ) * powerMultiplier;
 
-            // Предсказываем траекторию с учётом коллизий
             Vector2[] trajectory = PlotWithCollisions(_rb, (Vector2)transform.position, velocity, 8, 0.01f, LayerMask.GetMask("Table", "Balls"));
-    
-            // Рендерим траекторию с predictionLine
+
             RenderPredictionLine(trajectory);
         }
 
@@ -84,10 +79,10 @@ public class PlayerBall : MonoBehaviour
             _endPoint.z = 15f;
 
             var diff = _startPoint - _endPoint;
-            
+
             _force = new Vector2(Mathf.Clamp(diff.x, minPower.x, maxPower.x),
                 Mathf.Clamp(diff.y, minPower.y, maxPower.y));
-            
+
             _rb.AddForce(_force * powerMultiplier, ForceMode2D.Impulse);
             _tl.EndLine();
             predictionLine.positionCount = 0;
@@ -107,38 +102,11 @@ public class PlayerBall : MonoBehaviour
         Vector3[] positions = new Vector3[trajectory.Length];
         for (int i = 0; i < trajectory.Length; i++)
         {
-            positions[i] = new Vector3(trajectory[i].x, trajectory[i].y, 15f); // Z-координата для 2D
+            positions[i] = new Vector3(trajectory[i].x, trajectory[i].y, 15f);
         }
         predictionLine.SetPositions(positions);
     }
 
-
-
-     public Vector2[] Plot(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, float friction)
-    {
-        Vector2[] results = new Vector2[steps];
-        float timestep = Time.fixedDeltaTime;
-        Vector2 moveStep = velocity * timestep;
-
-        for (int i = 0; i < steps; i++)
-        {
-            // Добавляем шаг движения
-            pos += moveStep;
-
-            // Сохраняем текущую позицию
-            results[i] = pos;
-
-            // Учитываем трение (уменьшение скорости)
-            moveStep *= (1f - friction * timestep);
-
-            // Прекращаем симуляцию, если скорость становится слишком маленькой
-            if (moveStep.magnitude < 0.01f)
-                break;
-        }
-
-        return results;
-    }
-     
     public Vector2[] PlotWithCollisions(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, float friction, LayerMask collisionMask)
     {
         Vector2[] results = new Vector2[steps];
@@ -147,43 +115,37 @@ public class PlayerBall : MonoBehaviour
 
         for (int i = 0; i < steps; i++)
         {
-            // Проверяем коллизии с помощью Raycast
-            RaycastHit2D hit = Physics2D.Raycast(pos, moveStep.normalized, moveStep.magnitude, collisionMask);
+            RaycastHit2D hit = Physics2D.CircleCast(pos, sphereRadius, moveStep.normalized, moveStep.magnitude, collisionMask);
             if (hit.collider != null)
             {
-                // Добавляем точку столкновения
                 results[i] = hit.point;
 
-                // Рассчитываем отражённый вектор (угол отражения = углу падения)
                 Vector2 normal = hit.normal;
                 moveStep = Vector2.Reflect(moveStep, normal);
 
-                // Уменьшаем силу движения из-за трения
                 moveStep *= (1f - friction * timestep);
 
-                // Продолжаем с новой позиции
-                pos = hit.point + moveStep.normalized * 0.01f; // Смещаем немного, чтобы избежать повторного попадания
+                pos = hit.point + moveStep.normalized * sphereRadius; // Смещаем для предотвращения повторных столкновений
             }
             else
             {
-                // Если нет столкновений, просто движемся вперёд
                 pos += moveStep;
 
-                // Уменьшаем силу движения из-за трения
                 moveStep *= (1f - friction * timestep);
 
-                // Прекращаем симуляцию, если скорость становится слишком маленькой
                 if (moveStep.magnitude < 0.01f)
                     break;
 
-                // Сохраняем текущую позицию
                 results[i] = pos;
             }
         }
 
         return results;
     }
-
-
-    
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, sphereRadius);
+    }
 }
