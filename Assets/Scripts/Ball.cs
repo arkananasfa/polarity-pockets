@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-
     private int CurrentPolarityIndex
     {
         get => _currentPolarityIndex;
@@ -15,7 +14,7 @@ public class Ball : MonoBehaviour
             CurrentPolarity = _polarities[realValue];
         }
     }
-    
+
     private Polarity CurrentPolarity
     {
         get => _currentPolarity;
@@ -25,19 +24,20 @@ public class Ball : MonoBehaviour
             _currentPolarity.Init(this);
         }
     }
-    
-    [SerializeField] private  List<PolaritiyType> polarityTypes = new List<PolaritiyType>
+
+    [SerializeField] private List<PolaritiyType> polarityTypes = new List<PolaritiyType>
         { PolaritiyType.Positive, PolaritiyType.Negative };
-    
+
     [SerializeField] private float friction = 0.99f;
-    
+    [SerializeField] private ParticleSystem collisionParticles; // Подключим ParticleSystem через инспектор
+
     private List<Polarity> _polarities = new List<Polarity>();
     private Polarity _currentPolarity;
     private int _currentPolarityIndex = 0;
     private Rigidbody2D _rb;
-    
+
     private SpriteRenderer _spriteRenderer;
-    
+
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -47,7 +47,7 @@ public class Ball : MonoBehaviour
         CurrentPolarityIndex = 0;
         _rb = GetComponent<Rigidbody2D>();
     }
-    
+
     private void FixedUpdate()
     {
         _rb.linearVelocity *= friction;
@@ -56,6 +56,13 @@ public class Ball : MonoBehaviour
     public void SetColor(Color color)
     {
         _spriteRenderer.color = color;
+
+        // Устанавливаем цвет частиц в зависимости от шара
+        if (collisionParticles != null)
+        {
+            var main = collisionParticles.main;
+            main.startColor = color;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -67,6 +74,14 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         SoundController.Instance.PlayHitSound();
+
+        // Эффект частиц при коллизии
+        if (collisionParticles != null)
+        {
+            collisionParticles.transform.position = collision.contacts[0].point; // Устанавливаем позицию частиц
+            collisionParticles.Play(); // Запускаем эффект
+        }
+
         if (collision.gameObject.CompareTag("Ball"))
         {
             CurrentPolarity.InteractWithBall();

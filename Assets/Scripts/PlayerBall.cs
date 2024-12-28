@@ -26,6 +26,7 @@ public class PlayerBall : MonoBehaviour
     private Vector3 _startPoint;
     private Vector3 _endPoint;
     private TrajectoryLine _tl;
+    private bool _flag;
 
     private Rigidbody2D _rb;
 
@@ -37,13 +38,22 @@ public class PlayerBall : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButton(1))
+        {
+            _tl.EndLine();
+            predictionLine.positionCount = 0;
+            _flag = false;
+            return;
+        }
+        
         if (Input.GetMouseButtonDown(0))
         {
             _startPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _startPoint.z = 15f;
+            _flag = true;
         }
 
-        if (Input.GetMouseButton(0))
+        if (_flag)
         {
             Vector3 currentPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _startPoint.z = 15f;
@@ -70,7 +80,7 @@ public class PlayerBall : MonoBehaviour
             RenderPredictionLine(trajectory);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && _flag)
         {
             _endPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _endPoint.z = 15f;
@@ -83,7 +93,7 @@ public class PlayerBall : MonoBehaviour
             _rb.AddForce(_force * powerMultiplier, ForceMode2D.Impulse);
             _tl.EndLine();
             predictionLine.positionCount = 0;
-            
+            _flag = false;
             ResourcesManager.Tries.Value--;
         }
     }
