@@ -81,6 +81,8 @@ public class PlayerBall : MonoBehaviour
             _rb.AddForce(_force * powerMultiplier, ForceMode2D.Impulse);
             _tl.EndLine();
             predictionLine.positionCount = 0;
+            
+            ResourcesManager.Tries.Value--;
         }
     }
     
