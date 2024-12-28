@@ -64,19 +64,17 @@ public class PlayerBall : MonoBehaviour
             startPos.z = 15f;
             _tl.RenderLine(startPos, endPos);
             
+            // Рассчитываем силу удара
             var diff = _startPoint - currentPoint;
             Vector2 velocity = new Vector2(
                 Mathf.Clamp(diff.x, minPower.x, maxPower.x),
                 Mathf.Clamp(diff.y, minPower.y, maxPower.y)
             ) * powerMultiplier;
 
-            // Предсказываем траекторию
-            Vector2[] trajectory = Plot(_rb, (Vector2)transform.position, velocity, 4, 0.01f);
+            // Предсказываем траекторию с учётом коллизий
+            Vector2[] trajectory = PlotWithCollisions(_rb, (Vector2)transform.position, velocity, 8, 0.01f, LayerMask.GetMask("Table", "Balls"));
     
             // Рендерим траекторию с predictionLine
-            RenderPredictionLine(trajectory);
-
-            // Отображение траектории
             RenderPredictionLine(trajectory);
         }
 
@@ -140,6 +138,52 @@ public class PlayerBall : MonoBehaviour
 
         return results;
     }
+     
+    public Vector2[] PlotWithCollisions(Rigidbody2D rigidbody, Vector2 pos, Vector2 velocity, int steps, float friction, LayerMask collisionMask)
+    {
+        Vector2[] results = new Vector2[steps];
+        float timestep = Time.fixedDeltaTime;
+        Vector2 moveStep = velocity * timestep;
+
+        for (int i = 0; i < steps; i++)
+        {
+            // Проверяем коллизии с помощью Raycast
+            RaycastHit2D hit = Physics2D.Raycast(pos, moveStep.normalized, moveStep.magnitude, collisionMask);
+            if (hit.collider != null)
+            {
+                // Добавляем точку столкновения
+                results[i] = hit.point;
+
+                // Рассчитываем отражённый вектор (угол отражения = углу падения)
+                Vector2 normal = hit.normal;
+                moveStep = Vector2.Reflect(moveStep, normal);
+
+                // Уменьшаем силу движения из-за трения
+                moveStep *= (1f - friction * timestep);
+
+                // Продолжаем с новой позиции
+                pos = hit.point + moveStep.normalized * 0.01f; // Смещаем немного, чтобы избежать повторного попадания
+            }
+            else
+            {
+                // Если нет столкновений, просто движемся вперёд
+                pos += moveStep;
+
+                // Уменьшаем силу движения из-за трения
+                moveStep *= (1f - friction * timestep);
+
+                // Прекращаем симуляцию, если скорость становится слишком маленькой
+                if (moveStep.magnitude < 0.01f)
+                    break;
+
+                // Сохраняем текущую позицию
+                results[i] = pos;
+            }
+        }
+
+        return results;
+    }
+
 
     
 }
