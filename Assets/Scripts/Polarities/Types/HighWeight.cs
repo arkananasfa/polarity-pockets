@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HighMass : Polarity
 {
-    public override Color Color => Color.cyan;
+    public override Color Color => Color.blue;
 
     public virtual void Init(Ball ball)
     {

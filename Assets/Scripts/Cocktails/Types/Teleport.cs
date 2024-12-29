@@ -4,6 +4,6 @@ public class Teleport : Cocktail
 {
     public override void Use()
     {
-        Debug.Log("Teleport");
+        GameObject.FindAnyObjectByType<PlayerBall>().PlayerLocate();
     }
 }

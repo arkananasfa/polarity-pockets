@@ -26,11 +26,16 @@ public class PlayerBall : MonoBehaviour
     private Vector3 _endPoint;
     private TrajectoryLine _tl;
     private bool _flag;
-
+    private bool _isOutOfBoard;
+    private Collider2D _collider;
+    
+    private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rb;
 
     private void Awake()
     {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<Collider2D>();
         _rb = GetComponent<Rigidbody2D>();
         _tl = GetComponent<TrajectoryLine>();
     }
@@ -43,6 +48,30 @@ public class PlayerBall : MonoBehaviour
             predictionLine.positionCount = 0;
             _flag = false;
             return;
+        }
+
+        if (_isOutOfBoard)
+        {
+            Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            position = position - Vector3.forward * position.normalized;
+            transform.position = position;
+            
+            bool isInRange = Mathf.Abs(position.x) < 7f && Mathf.Abs(position.y) < 3.2f;
+            
+            Color color = isInRange ? Color.green : Color.red;
+            color = new Color(color.r, color.g, color.b, 0.8f);
+            _spriteRenderer.color = color;
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (isInRange)
+                {
+                    _isOutOfBoard = false;
+                    _collider.enabled = true;
+                    GameManager.IsBlocked = false;
+                    _spriteRenderer.color = Color.white;
+                }
+            }
         }
         
         if (Input.GetMouseButtonDown(0) && ResourcesManager.Tries.Value > 0 && Time.timeScale != 0 && !GameManager.IsBlocked)
@@ -97,6 +126,13 @@ public class PlayerBall : MonoBehaviour
         _rb.linearVelocity *= friction;
     }
 
+    public void PlayerLocate()
+    {
+        _collider.enabled = false;
+        GameManager.IsBlocked = true;
+        _isOutOfBoard = true;
+    }
+
     private void RenderPredictionLine(Vector2[] trajectory)
     {
         predictionLine.positionCount = trajectory.Length;
@@ -143,10 +179,10 @@ public class PlayerBall : MonoBehaviour
 
         return results;
     }
-    void OnDrawGizmosSelected()
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, sphereRadius);
+        ResourcesManager.Tries.Value--;
+        PlayerLocate();
     }
 }
