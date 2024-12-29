@@ -45,7 +45,7 @@ public class PlayerBall : MonoBehaviour
             return;
         }
         
-        if (Input.GetMouseButtonDown(0) && ResourcesManager.Tries.Value > 0 && Time.timeScale != 0)
+        if (Input.GetMouseButtonDown(0) && ResourcesManager.Tries.Value > 0 && Time.timeScale != 0 && !GameManager.IsBlocked)
         {
             _startPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _startPoint.z = 15f;
@@ -87,7 +87,8 @@ public class PlayerBall : MonoBehaviour
             _tl.EndLine();
             predictionLine.positionCount = 0;
             _flag = false;
-            ResourcesManager.Tries.Value--;
+            if (_force.magnitude > 0.03f)
+                ResourcesManager.Tries.Value--;
         }
     }
 

@@ -3,5 +3,6 @@ public enum PolaritiyType
     Positive,
     Negative,
     MegaPositive,
-    HighMass
+    HighMass,
+    Defeat
 }

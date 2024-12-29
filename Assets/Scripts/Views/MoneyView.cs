@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class TriesView : MonoBehaviour
+public class MoneyView : MonoBehaviour
 {
 
     private TextMeshProUGUI _text;
@@ -10,16 +10,16 @@ public class TriesView : MonoBehaviour
     private void Awake()
     {
         _text = GetComponent<TextMeshProUGUI>();
-        ResourcesManager.Tries.OnValueChanged += SetValue;
+        ResourcesManager.Money.OnValueChanged += SetValue;
     }
-    
+
     private void Start()
     {
-        SetValue(ResourcesManager.Tries.Value);
+        SetValue(ResourcesManager.Money.Value);
     }
 
     private void SetValue(int value)
     {
-        _text.text = value + " tries";
+        _text.text = value + "$";
     }
 }

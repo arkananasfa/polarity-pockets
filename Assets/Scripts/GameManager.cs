@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
+    public static bool IsBlocked = false;
+    
     [Header("Player")]
     [SerializeField] private PlayerBall playerBall;
     [SerializeField] private Transform playerStartPoint;
@@ -22,7 +24,7 @@ public class GameManager : MonoBehaviour
     {
         ResourcesManager.Tries.OnValueChanged += CheckLose;
         GlobalEventManager.OnBallOnPocket += CheckWin;
-        GlobalEventManager.OnBackToGameButtonClicked += StartLevel;
+        GlobalEventManager.OnBackToGameButtonClicked += StartNextLevel;
     }
     
     private void Start()
@@ -30,28 +32,52 @@ public class GameManager : MonoBehaviour
         StartLevel();
     }
 
+    private void StartNextLevel()
+    {
+        currentRound.Value++;
+        StartLevel();
+    }
+    
     private void StartLevel()
     {
         playerBall.transform.position = playerStartPoint.position;
         
-        _ballsCount = spawnPoints.Count;
+        if (currentRound.Value >= levelConfigs.Count)
+            levelConfigs[^1].startTries--;
+        LevelConfig config = currentRound.Value >= levelConfigs.Count 
+            ? levelConfigs[^1]
+            : levelConfigs[currentRound.Value-1];
+        
+        _ballsCount = 0;
         foreach (var sp in spawnPoints)
         {
-            var ball = SpawnBall();
+            _ballsCount++;
+            var ball = SpawnBall(config);
             ball.transform.position = sp.position;
         }
+        ResourcesManager.Tries.Value = config.startTries;
+        IsBlocked = false;
     }
 
-    private Ball SpawnBall()
+    private Ball SpawnBall(LevelConfig config)
     {
         Ball ball = Instantiate(ballPrefab);
-        ball
+        PolaritiyType[] polarities = new PolaritiyType[2];
+        polarities[0] = SelectPolarities(config);
+        int tries = 0;
+        do
+        {
+            polarities[1] = SelectPolarities(config);
+            tries++;
+        } while (polarities[1] == polarities[0] && tries < 30);
+        ball.SetPolarities(polarities);
+        ball.Init();
+        return ball;
     }
 
-    private PolaritiyType SelectPolarities()
+    private PolaritiyType SelectPolarities(LevelConfig config)
     {
-        LevelConfig config = levelConfigs[currentRound.Value-1];
-        int rand = Random.Range(1, 101);
+        int rand = Random.Range(1, 100);
         foreach (var polaritySetts in config.levelConfig)
         {
             rand -= polaritySetts.percent;
@@ -64,10 +90,11 @@ public class GameManager : MonoBehaviour
 
     private void CheckWin()
     {
-        if (--_ballsCount == 0)
+        if (_ballsCount-1 == 0)
         {
             Win();
         }
+        _ballsCount--;
     }
     
     private void CheckLose(int value)
@@ -78,13 +105,15 @@ public class GameManager : MonoBehaviour
 
     private void Win()
     {
+        ResourcesManager.Money.Value += ResourcesManager.Tries.Value;
         GlobalEventManager.Win(currentRound.Value);
-        currentRound.Value++;
+        IsBlocked = true;
     }
 
     private void Lose()
     {
         GlobalEventManager.Lose(currentRound.Value);
+        IsBlocked = true;
     }
     
 }

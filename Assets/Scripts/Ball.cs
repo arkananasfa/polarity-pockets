@@ -10,7 +10,7 @@ public class Ball : MonoBehaviour
         get => _currentPolarityIndex;
         set
         {
-            CurrentPolarity.End(this);
+            CurrentPolarity?.End(this);
             int realValue = value >= _polarities.Count ? 0 : value;
             _currentPolarityIndex = realValue;
             CurrentPolarity = _polarities[realValue];
@@ -46,12 +46,16 @@ public class Ball : MonoBehaviour
 
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void Init()
+    {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         polarityTypes.ForEach(type => _polarities.Add(PolarityFactory.CreatePolarity(type)));
         if (_polarities.Count == 0)
             throw new Exception("No polarities found");
         CurrentPolarityIndex = 0;
-        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
@@ -72,9 +76,9 @@ public class Ball : MonoBehaviour
         _nextPolaritySpriteRenderer.color = NextPolarity.Color;
     }
 
-    public void SetPolarities(Polarity[] polarities)
+    public void SetPolarities(PolaritiyType[] polarities)
     {
-        _polarities = polarities.ToList();
+        polarityTypes = polarities.ToList();
     }
 
     public void SetMass(float mass)
@@ -89,6 +93,7 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        GlobalEventManager.BallOnPocket();
         CurrentPolarity.InteractWithPocket();
         Destroy(gameObject);
     }

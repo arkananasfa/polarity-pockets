@@ -11,12 +11,14 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject panelsBack;
     
     [Header("Lose Menu")]
+    [SerializeField] private GameObject loseMenuGO;
     [SerializeField] private RectTransform loseMenu;
     [SerializeField] private CanvasGroup loseMenuCanvasGroup;
     [SerializeField] private Button loseMenuButton;
     [SerializeField] private TextMeshProUGUI roundsBeatenText;
     
     [Header("Win Menu")]
+    [SerializeField] private GameObject winMenuGO;
     [SerializeField] private RectTransform winMenu;
     [SerializeField] private CanvasGroup winMenuCanvasGroup;
     [SerializeField] private Button winMenuButton;
@@ -25,7 +27,7 @@ public class UI : MonoBehaviour
     private void OnEnable()
     {
         GlobalEventManager.OnLose += ShowLoseMenu;
-        GlobalEventManager.OnLose += ShowWinMenu;
+        GlobalEventManager.OnWin += ShowWinMenu;
         loseMenuButton.onClick.AddListener(RestartGame);
         winMenuButton.onClick.AddListener(GoToShop);
     }
@@ -33,9 +35,10 @@ public class UI : MonoBehaviour
     public void ShowWinMenu(int rounds)
     {
         ShowPanelsBack(true);
+        winMenuGO.SetActive(true);
         
         winMenu.sizeDelta = Vector2.zero;
-        winMenu.DOSizeDelta(new Vector2(400, 260), 0.6f);
+        winMenu.DOSizeDelta(new Vector2(420, 280), 0.6f);
         
         winMenuCanvasGroup.alpha = 0f;
         winMenuCanvasGroup.DOFade(1f, 0.6f);
@@ -46,9 +49,10 @@ public class UI : MonoBehaviour
     public void ShowLoseMenu(int rounds)
     {
         ShowPanelsBack(true);
+        loseMenuGO.SetActive(true);
         
         loseMenu.sizeDelta = Vector2.zero;
-        loseMenu.DOSizeDelta(new Vector2(400, 260), 0.6f);
+        loseMenu.DOSizeDelta(new Vector2(420, 280), 0.6f);
         
         loseMenuCanvasGroup.alpha = 0f;
         loseMenuCanvasGroup.DOFade(1f, 0.6f);
@@ -59,6 +63,11 @@ public class UI : MonoBehaviour
     private void ShowPanelsBack(bool isActive)
     {
         panelsBack.SetActive(isActive);
+        if (isActive == false)
+        {
+            loseMenuGO.SetActive(false);
+            winMenuGO.SetActive(false);
+        }
     }
 
     private void GoToShop()

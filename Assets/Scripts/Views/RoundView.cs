@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class TriesView : MonoBehaviour
+public class RoundView : MonoBehaviour
 {
 
     private TextMeshProUGUI _text;
@@ -10,16 +10,16 @@ public class TriesView : MonoBehaviour
     private void Awake()
     {
         _text = GetComponent<TextMeshProUGUI>();
-        ResourcesManager.Tries.OnValueChanged += SetValue;
+        GameManager.currentRound.OnValueChanged += SetValue;
     }
-    
+
     private void Start()
     {
-        SetValue(ResourcesManager.Tries.Value);
+        SetValue(GameManager.currentRound.Value);
     }
 
     private void SetValue(int value)
     {
-        _text.text = value + " tries";
+        _text.text = value + " round";
     }
 }

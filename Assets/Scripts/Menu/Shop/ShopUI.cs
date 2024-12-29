@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class ShopUI : MonoBehaviour
@@ -22,14 +23,16 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private RectTransform container;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private Button backToGameButton;
 
-    private List<CocktailElement> _cocktailElements;
+    private List<CocktailElement> _cocktailElements = new();
 
     private void OnEnable()
     {
         GlobalEventManager.OnGoToShopButtonClicked += Open;
+        backToGameButton.onClick.AddListener(BackToGame);
     }
-
+        
     public void Open()
     {
         canvasGroup.alpha = 0;
@@ -40,6 +43,7 @@ public class ShopUI : MonoBehaviour
         {
             CocktailElement element = Instantiate(cocktailElementPrefab, container);
             element.Init(cocktail);
+            _cocktailElements.Add(element);
         }
     }
 
@@ -62,6 +66,18 @@ public class ShopUI : MonoBehaviour
             models[i] = CocktailsStorage.instance.cocktailModels[indices[i]];
 
         return models;
-    }  
+    }
+
+    private void BackToGame()
+    {
+        _cocktailElements.ForEach(ce =>
+        {
+            if (ce!=null)
+                Destroy(ce.gameObject);
+        });
+        _cocktailElements.Clear();
+        shopPanel.SetActive(false);
+        GlobalEventManager.BackToGame();
+    }
 
 }
