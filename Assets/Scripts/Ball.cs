@@ -81,6 +81,11 @@ public class Ball : MonoBehaviour
         polarityTypes = polarities.ToList();
     }
 
+    public float GetVelocity()
+    {
+        return _rb.linearVelocity.magnitude;
+    }
+
     public void SetMass(float mass)
     {
         _rb.mass = mass;
@@ -88,6 +93,11 @@ public class Ball : MonoBehaviour
 
     public void ReversePolarity()
     {
+        if (collisionParticles != null)
+        {
+            collisionParticles.transform.position = transform.position;
+            collisionParticles.Play();
+        }
         CurrentPolarityIndex++;
     }
 
@@ -101,12 +111,6 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         SoundController.Instance.PlayHitSound();
-
-        if (collisionParticles != null)
-        {
-            collisionParticles.transform.position = collision.contacts[0].point;
-            collisionParticles.Play();
-        }
 
         if (collision.gameObject.CompareTag("Ball"))
         {

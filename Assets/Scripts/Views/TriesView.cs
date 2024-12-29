@@ -20,6 +20,6 @@ public class TriesView : MonoBehaviour
 
     private void SetValue(int value)
     {
-        _text.text = value + " tries";
+        _text.text = (value > 0 ? value : 0) + " tries";
     }
 }

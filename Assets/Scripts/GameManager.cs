@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     public static ObservableValue<int> currentRound = new ObservableValue<int>(1);
 
     private int _ballsCount;
+    private List<Ball> _balls = new();
     
     private void Awake()
     {
@@ -49,14 +52,16 @@ public class GameManager : MonoBehaviour
             : levelConfigs[currentRound.Value-1];
         
         _ballsCount = 0;
+        _balls.Clear();
         int count = 0;
         foreach (var sp in spawnPoints)
         {
-            if (count++ > 0)
-                break;
+            //if (count++ > 0)
+                //break;
             _ballsCount++;
             var ball = SpawnBall(config);
             ball.transform.position = sp.position;
+            _balls.Add(ball);
         }
         ResourcesManager.Tries.Value = config.startTries;
         IsBlocked = false;
@@ -103,7 +108,31 @@ public class GameManager : MonoBehaviour
     private void CheckLose(int value)
     {
         if (value <= 0)
+        {
+            StartCoroutine(ChekingLose());
+        }
+    }
+    
+    private IEnumerator ChekingLose()
+    {
+        yield return new WaitForSeconds(0.3f);
+        while (SomethingIsMoving() && ResourcesManager.Tries.Value <= 0)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        if (ResourcesManager.Tries.Value <= 0)
             Lose();
+    }
+
+    private bool SomethingIsMoving()
+    {
+        return playerBall.GetVelocity() > 0.5f || _balls.Any(b =>
+        {
+            if (b != null)
+                return b.GetVelocity() > 0.5f;
+            else return false;
+        });
     }
 
     private void Win()
