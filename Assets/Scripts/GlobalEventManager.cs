@@ -37,5 +37,8 @@ public static class GlobalEventManager
     {
         OnLose = null;
         OnWin = null;
+        OnBallOnPocket = null;
+        OnGoToShopButtonClicked = null;
+        OnBackToGameButtonClicked = null;
     }
 }

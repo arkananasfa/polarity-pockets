@@ -14,4 +14,9 @@ public class HighMass : Polarity
     {
         ball.SetMass(2f);
     }
+    
+    public override void InteractWithPocket()
+    {
+        ResourcesManager.Tries.Value += 2;
+    }
 }

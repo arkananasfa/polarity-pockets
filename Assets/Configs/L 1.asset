@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fafb1c3bbeec194a863e4315ddd0431, type: 3}
-  m_Name: L1
+  m_Name: L 1
   m_EditorClassIdentifier: 
   levelConfig:
   - polarityType: 0

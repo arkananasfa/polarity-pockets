@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelConfig:
   - polarityType: 0
-    percent: 20
+    percent: 25
   - polarityType: 1
-    percent: 30
+    percent: 35
   - polarityType: 2
-    percent: 15
+    percent: 10
   - polarityType: 4
-    percent: 20
+    percent: 10
   - polarityType: 3
-    percent: 15
-  startTries: 15
+    percent: 20
+  startTries: 3
