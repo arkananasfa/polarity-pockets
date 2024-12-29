@@ -39,28 +39,28 @@ public class GameManager : MonoBehaviour
     }
     
     private void StartLevel()
+    {
+        playerBall.transform.position = playerStartPoint.position;
+        
+        if (currentRound.Value >= levelConfigs.Count)
+            levelConfigs[^1].startTries--;
+        LevelConfig config = currentRound.Value >= levelConfigs.Count 
+            ? levelConfigs[^1]
+            : levelConfigs[currentRound.Value-1];
+        
+        _ballsCount = 0;
+        int count = 0;
+        foreach (var sp in spawnPoints)
         {
-            playerBall.transform.position = playerStartPoint.position;
-            
-            if (currentRound.Value >= levelConfigs.Count)
-                levelConfigs[^1].startTries--;
-            LevelConfig config = currentRound.Value >= levelConfigs.Count 
-                ? levelConfigs[^1]
-                : levelConfigs[currentRound.Value-1];
-            
-            _ballsCount = 0;
-            int count = 0;
-            foreach (var sp in spawnPoints)
-            {
-                if (count++ > 0)
-                    break;
-                _ballsCount++;
-                var ball = SpawnBall(config);
-                ball.transform.position = sp.position;
-            }
-            ResourcesManager.Tries.Value = config.startTries;
-            IsBlocked = false;
+            if (count++ > 0)
+                break;
+            _ballsCount++;
+            var ball = SpawnBall(config);
+            ball.transform.position = sp.position;
         }
+        ResourcesManager.Tries.Value = config.startTries;
+        IsBlocked = false;
+    }
     
     private Ball SpawnBall(LevelConfig config)
     {

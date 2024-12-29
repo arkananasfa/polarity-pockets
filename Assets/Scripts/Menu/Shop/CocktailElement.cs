@@ -44,7 +44,7 @@ public class CocktailElement : MonoBehaviour
 
     private void CheckIsAvailable(int money)
     {
-        _button.interactable = money > _price;
+        _button.interactable = money >= _price;
     }
 
     private void BuyCocktail()
