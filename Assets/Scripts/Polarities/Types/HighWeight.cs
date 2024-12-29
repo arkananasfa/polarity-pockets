@@ -4,13 +4,13 @@ public class HighMass : Polarity
 {
     public override Color Color => Color.blue;
 
-    public virtual void Init(Ball ball)
+    public override void Init(Ball ball)
     {
         base.Init(ball);
-        ball.SetMass(5f);
+        ball.SetMass(10f);
     }
 
-    public virtual void End(Ball ball)
+    public override void End(Ball ball)
     {
         ball.SetMass(2f);
     }

@@ -35,8 +35,7 @@ public class ShopUI : MonoBehaviour
         
     public void Open()
     {
-        if (canvasGroup != null)
-            canvasGroup.alpha = 0;
+        canvasGroup.alpha = 0;
         canvasGroup.DOFade(1f, 0.6f);
         shopPanel.SetActive(true);
         var cocktails = GetThreeRandomCocktails();

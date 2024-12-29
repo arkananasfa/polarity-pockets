@@ -128,6 +128,7 @@ public class PlayerBall : MonoBehaviour
 
     public void PlayerLocate()
     {
+        _rb.linearVelocity = Vector2.zero;
         _collider.enabled = false;
         GameManager.IsBlocked = true;
         _isOutOfBoard = true;
@@ -178,6 +179,11 @@ public class PlayerBall : MonoBehaviour
         }
 
         return results;
+    }
+    
+    public float GetVelocity()
+    {
+        return _rb.linearVelocity.magnitude;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
