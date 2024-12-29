@@ -18,7 +18,7 @@ public class BuffPanelUI : MonoBehaviour
     [SerializeField] private Color inactiveColor = Color.gray; // Цвет кнопки, если баффа нет
 
     private Coroutine animationCoroutine;
-    private bool isPanelOpen = false; // Флаг состояния панели
+    private bool isPanelOpen = false; 
 
     private void OnEnable()
     {
@@ -109,6 +109,7 @@ public class BuffPanelUI : MonoBehaviour
         if (animationCoroutine != null) StopCoroutine(animationCoroutine);
         animationCoroutine = StartCoroutine(AnimatePanel(1, animationDuration));
         isPanelOpen = true;
+        GameManager.IsBlocked = true;
     }
 
     // Плавное закрытие панели
@@ -117,6 +118,7 @@ public class BuffPanelUI : MonoBehaviour
         if (animationCoroutine != null) StopCoroutine(animationCoroutine);
         animationCoroutine = StartCoroutine(AnimatePanel(0, animationDuration));
         isPanelOpen = false;
+        GameManager.IsBlocked = false;
     }
 
     // Мгновенно скрыть панель

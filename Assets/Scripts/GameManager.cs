@@ -52,8 +52,8 @@ public class GameManager : MonoBehaviour
         int count = 0;
         foreach (var sp in spawnPoints)
         {
-            if (count++ > 0)
-                break;
+            // if (count++ > 0)
+            //     break;
             _ballsCount++;
             var ball = SpawnBall(config);
             ball.transform.position = sp.position;
