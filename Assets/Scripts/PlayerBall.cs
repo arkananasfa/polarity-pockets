@@ -44,8 +44,8 @@ public class PlayerBall : MonoBehaviour
             _flag = false;
             return;
         }
-
-        if (Input.GetMouseButtonDown(0) && Time.timeScale != 0)
+        
+        if (Input.GetMouseButtonDown(0) && ResourcesManager.Tries.Value > 0 && Time.timeScale != 0)
         {
             _startPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _startPoint.z = 15f;

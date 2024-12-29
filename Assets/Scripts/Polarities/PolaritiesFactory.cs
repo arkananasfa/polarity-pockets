@@ -8,6 +8,7 @@ public static class PolarityFactory
         PolaritiyType.Positive => new PositivePolarity(),
         PolaritiyType.Negative => new NegativePolarity(),
         PolaritiyType.MegaPositive => new MegaPositivePolarity(),
+        PolaritiyType.HighMass => new HighMass(),
         _ => new PositivePolarity(),
     };
 

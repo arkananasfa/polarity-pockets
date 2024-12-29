@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PositivePolarity : Polarity
 {
-    protected override Color Color => Color.cyan;
+    public override Color Color => Color.cyan;
 
     public override void InteractWithPocket()
     {

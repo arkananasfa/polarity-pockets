@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -9,6 +10,7 @@ public class Ball : MonoBehaviour
         get => _currentPolarityIndex;
         set
         {
+            CurrentPolarity.End(this);
             int realValue = value >= _polarities.Count ? 0 : value;
             _currentPolarityIndex = realValue;
             CurrentPolarity = _polarities[realValue];
@@ -24,12 +26,16 @@ public class Ball : MonoBehaviour
             _currentPolarity.Init(this);
         }
     }
+    
+    private int NextIndex => CurrentPolarityIndex + 1 >= _polarities.Count ? 0 : CurrentPolarityIndex + 1;
+    private Polarity NextPolarity => _polarities[NextIndex];
 
     [SerializeField] private List<PolaritiyType> polarityTypes = new List<PolaritiyType>
         { PolaritiyType.Positive, PolaritiyType.Negative };
 
     [SerializeField] private float friction = 0.99f;
-    [SerializeField] private ParticleSystem collisionParticles; // Подключим ParticleSystem через инспектор
+    [SerializeField] private ParticleSystem collisionParticles;
+    [SerializeField] private SpriteRenderer _nextPolaritySpriteRenderer;
 
     private List<Polarity> _polarities = new List<Polarity>();
     private Polarity _currentPolarity;
@@ -57,12 +63,28 @@ public class Ball : MonoBehaviour
     {
         _spriteRenderer.color = color;
 
-        // Устанавливаем цвет частиц в зависимости от шара
         if (collisionParticles != null)
         {
             var main = collisionParticles.main;
             main.startColor = color;
         }
+
+        _nextPolaritySpriteRenderer.color = NextPolarity.Color;
+    }
+
+    public void SetPolarities(Polarity[] polarities)
+    {
+        _polarities = polarities.ToList();
+    }
+
+    public void SetMass(float mass)
+    {
+        _rb.mass = mass;
+    }
+
+    public void ReversePolarity()
+    {
+        CurrentPolarityIndex++;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -75,11 +97,10 @@ public class Ball : MonoBehaviour
     {
         SoundController.Instance.PlayHitSound();
 
-        // Эффект частиц при коллизии
         if (collisionParticles != null)
         {
-            collisionParticles.transform.position = collision.contacts[0].point; // Устанавливаем позицию частиц
-            collisionParticles.Play(); // Запускаем эффект
+            collisionParticles.transform.position = collision.contacts[0].point;
+            collisionParticles.Play();
         }
 
         if (collision.gameObject.CompareTag("Ball"))
@@ -95,6 +116,6 @@ public class Ball : MonoBehaviour
             CurrentPolarity.InteractWithWall();
         }
 
-        CurrentPolarityIndex++;
+        ReversePolarity();
     }
 }

@@ -3,16 +3,15 @@ using UnityEngine;
 
 public abstract class Polarity
 {
-    protected abstract Color Color { get; } 
-    
-    protected Ball ball;
+    public abstract Color Color { get; } 
 
     public virtual void Init(Ball ball)
     {
-        this.ball = ball;
         ball.SetColor(Color);
     }
 
+    public virtual void End(Ball ball) {}
+    
     public virtual void InteractWithPlayer() {}
     public virtual void InteractWithBall() {}
     public virtual void InteractWithWall() {}
