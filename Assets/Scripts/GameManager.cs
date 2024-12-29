@@ -45,8 +45,6 @@ public class GameManager : MonoBehaviour
     {
         playerBall.transform.position = playerStartPoint.position;
         
-        if (currentRound.Value >= levelConfigs.Count)
-            levelConfigs[^1].startTries--;
         LevelConfig config = currentRound.Value >= levelConfigs.Count 
             ? levelConfigs[^1]
             : levelConfigs[currentRound.Value-1];
@@ -116,12 +114,12 @@ public class GameManager : MonoBehaviour
     private IEnumerator ChekingLose()
     {
         yield return new WaitForSeconds(0.3f);
-        while (SomethingIsMoving() && ResourcesManager.Tries.Value <= 0)
+        while (SomethingIsMoving() && ResourcesManager.Tries.Value <= 0 && _ballsCount > 0)
         {
             yield return new WaitForSeconds(0.2f);
         }
 
-        if (ResourcesManager.Tries.Value <= 0)
+        if (ResourcesManager.Tries.Value <= 0 && _ballsCount > 0)
             Lose();
     }
 
