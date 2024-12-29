@@ -4,5 +4,6 @@ public enum PolaritiyType
     Negative,
     MegaPositive,
     HighMass,
-    Defeat
+    Defeat,
+    Bomb
 }

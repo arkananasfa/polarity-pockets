@@ -185,6 +185,7 @@ MonoBehaviour:
   firstTrack: {fileID: 8300000, guid: 261313ddee15f434e89d9ded5d3e780c, type: 3}
   loopingTrack: {fileID: 8300000, guid: c165133b629661d4399572ef7ab9cf55, type: 3}
   shopMusic: {fileID: 8300000, guid: a0f8ece405b33ba409905a399404318e, type: 3}
+  shopMusic: {fileID: 0}
 --- !u!82 &85840808
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1636,6 +1637,7 @@ GameObject:
   - component: {fileID: 1162178277}
   - component: {fileID: 1162178276}
   m_Layer: 0
+  m_Layer: 8
   m_Name: PlayerBall
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2536,11 +2538,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2803689390276407235, guid: c1992c2638e407545979fc4d6f8dbefb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.116
+      value: -0.088
       objectReference: {fileID: 0}
     - target: {fileID: 2803689390276407235, guid: c1992c2638e407545979fc4d6f8dbefb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.367
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 2803689390276407235, guid: c1992c2638e407545979fc4d6f8dbefb, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -2708,11 +2710,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6031573507489293723, guid: c1992c2638e407545979fc4d6f8dbefb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.401
+      value: 0.409
       objectReference: {fileID: 0}
     - target: {fileID: 6031573507489293723, guid: c1992c2638e407545979fc4d6f8dbefb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.676
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6031573507489293723, guid: c1992c2638e407545979fc4d6f8dbefb, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -3280,7 +3282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1894159815}
   - component: {fileID: 1894159814}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PredictionLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}

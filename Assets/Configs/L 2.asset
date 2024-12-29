@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelConfig:
   - polarityType: 0
-    percent: 30
+    percent: 20
   - polarityType: 1
-    percent: 40
+    percent: 50
   - polarityType: 2
     percent: 10
   - polarityType: 3

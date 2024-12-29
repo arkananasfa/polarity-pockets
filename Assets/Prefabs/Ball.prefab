@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3193423996607059540}
   - component: {fileID: 8835160625275362073}
   - component: {fileID: 3915857393402050088}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ball
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3376760990031165324}
   - component: {fileID: 3811188007745869014}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NextPolarityIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 3365930479322400283}
   - component: {fileID: 4658170575235877078}
   - component: {fileID: 6325903182992529233}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ParcticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}

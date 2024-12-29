@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour, ICanBeExploded
 {
     private int CurrentPolarityIndex
     {
@@ -89,6 +89,11 @@ public class Ball : MonoBehaviour
     public void SetMass(float mass)
     {
         _rb.mass = mass;
+    }
+
+    public void AddExplosionForce(Vector2 from, float force)
+    {
+        _rb.AddForce(((Vector2)transform.position - from).normalized*force, ForceMode2D.Impulse);
     }
 
     public void ReversePolarity()

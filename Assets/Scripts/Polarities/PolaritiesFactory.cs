@@ -10,6 +10,7 @@ public static class PolarityFactory
         PolaritiyType.MegaPositive => new MegaPositivePolarity(),
         PolaritiyType.HighMass => new HighMass(),
         PolaritiyType.Defeat => new DefeatPolarity(),
+        PolaritiyType.Bomb => new BombPolarity(),
         _ => new PositivePolarity(),
     };
 

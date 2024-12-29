@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerBall : MonoBehaviour
+public class PlayerBall : MonoBehaviour, ICanBeExploded
 {
     private static Camera MainCamera
     {
@@ -189,6 +189,11 @@ public class PlayerBall : MonoBehaviour
     //         }
     //     }
     // }
+    
+    public void AddExplosionForce(Vector2 from, float force)
+    {
+        _rb.AddForce(((Vector2)transform.position - from).normalized*force, ForceMode2D.Impulse);
+    }
     
     public float GetVelocity()
     {
