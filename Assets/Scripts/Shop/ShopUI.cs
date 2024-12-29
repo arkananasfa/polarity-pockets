@@ -1,9 +1,22 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ShopUI : MonoBehaviour
 {
 
+    #region Singleton
+
+    public static ShopUI instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    #endregion
+    
     [SerializeField] private CocktailElement cocktailElementPrefab;
     [SerializeField] private RectTransform container;
 
