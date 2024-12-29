@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerBall : MonoBehaviour
@@ -20,6 +22,7 @@ public class PlayerBall : MonoBehaviour
     [SerializeField] private Vector2 maxPower;
     [SerializeField] private LineRenderer predictionLine;
     [SerializeField] private float sphereRadius = 0.4f; // Радиус сферы для SphereCast
+    [SerializeField] private LayerMask collisionMask;
 
     private Vector2 _force;
     private Vector3 _startPoint;
@@ -50,31 +53,7 @@ public class PlayerBall : MonoBehaviour
             return;
         }
 
-        if (_isOutOfBoard)
-        {
-            Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            position = position - Vector3.forward * position.normalized;
-            transform.position = position;
-            
-            bool isInRange = Mathf.Abs(position.x) < 7f && Mathf.Abs(position.y) < 3.2f;
-            
-            Color color = isInRange ? Color.green : Color.red;
-            color = new Color(color.r, color.g, color.b, 0.8f);
-            _spriteRenderer.color = color;
-            
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (isInRange)
-                {
-                    _isOutOfBoard = false;
-                    _collider.enabled = true;
-                    GameManager.IsBlocked = false;
-                    _spriteRenderer.color = Color.white;
-                }
-            }
-        }
-        
-        if (Input.GetMouseButtonDown(0) && ResourcesManager.Tries.Value > 0 && Time.timeScale != 0 && !GameManager.IsBlocked)
+        if (Input.GetMouseButtonDown(0))
         {
             _startPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             _startPoint.z = 15f;
@@ -116,8 +95,7 @@ public class PlayerBall : MonoBehaviour
             _tl.EndLine();
             predictionLine.positionCount = 0;
             _flag = false;
-            if (_force.magnitude > 0.03f)
-                ResourcesManager.Tries.Value--;
+            ResourcesManager.Tries.Value--;
         }
     }
 
@@ -128,7 +106,6 @@ public class PlayerBall : MonoBehaviour
 
     public void PlayerLocate()
     {
-        _rb.linearVelocity = Vector2.zero;
         _collider.enabled = false;
         GameManager.IsBlocked = true;
         _isOutOfBoard = true;
@@ -180,15 +157,41 @@ public class PlayerBall : MonoBehaviour
 
         return results;
     }
+
+
+
+    // public void ShowPredictionLine(Vector2 startPoint, Vector2 velocity)
+    // {
+    //     Vector2[] trajectory = PlotWithCollisions(_rb, startPoint, velocity, 8, collisionMask);
+    //     RenderPredictionLine(trajectory, velocity);
+    // }
+    //
+    // private void HandleOutOfBoardState()
+    // {
+    //     Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //     position = position - Vector3.forward * position.normalized;
+    //     transform.position = position;
+    //
+    //     bool isInRange = Mathf.Abs(position.x) < 7f && Mathf.Abs(position.y) < 3.2f;
+    //
+    //     Color color = isInRange ? Color.green : Color.red;
+    //     color = new Color(color.r, color.g, color.b, 0.8f);
+    //     _spriteRenderer.color = color;
+    //
+    //     if (Input.GetMouseButtonDown(0))
+    //     {
+    //         if (isInRange)
+    //         {
+    //             _isOutOfBoard = false;
+    //             _collider.enabled = true;
+    //             GameManager.IsBlocked = false;
+    //             _spriteRenderer.color = Color.white;
+    //         }
+    //     }
+    // }
     
     public float GetVelocity()
     {
         return _rb.linearVelocity.magnitude;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        ResourcesManager.Tries.Value--;
-        PlayerLocate();
     }
 }
