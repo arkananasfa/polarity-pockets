@@ -9,13 +9,20 @@ public class MusicManager : MonoBehaviour
 
     private AudioSource audioSource;
     private bool isInShop = false; // Флаг для проверки, в магазине ли игрок
+    private float globalVolume = 1f; // Глобальная громкость музыки
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.loop = false; // Первоначально отключаем зацикливание
+
+        // Загрузка глобальной громкости музыки
+        globalVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+
+        // Подписка на глобальные события
         GlobalEventManager.OnGoToShopButtonClicked += ChangeShopMusic;
         GlobalEventManager.OnBackToGameButtonClicked += PlayFirstTrack;
+
         PlayFirstTrack();
     }
 
@@ -26,6 +33,14 @@ public class MusicManager : MonoBehaviour
         {
             PlayLoopingTrack();
         }
+
+        // Применяем глобальную громкость в реальном времени
+        ApplyGlobalVolume();
+    }
+
+    private void ApplyGlobalVolume()
+    {
+        audioSource.volume = globalVolume * (isInShop ? 0.4f : 0.2f); // Глобальная громкость * локальная
     }
 
     private void ChangeShopMusic()
@@ -34,7 +49,6 @@ public class MusicManager : MonoBehaviour
         audioSource.Stop(); // Останавливаем текущую музыку
         audioSource.clip = shopMusic; // Меняем трек на магазинный
         audioSource.loop = true; // Зацикливаем
-        audioSource.volume = 0.4f; // Устанавливаем громкость
         audioSource.Play(); // Воспроизводим
     }
 
@@ -42,7 +56,6 @@ public class MusicManager : MonoBehaviour
     {
         isInShop = false; // Сбрасываем флаг
         audioSource.Stop(); // Останавливаем текущую музыку
-        audioSource.volume = 0.2f; // Устанавливаем громкость
         if (firstTrack != null)
         {
             audioSource.clip = firstTrack;
@@ -51,7 +64,6 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("First track is not assigned!");
         }
     }
 
@@ -65,8 +77,13 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Looping track is not assigned!");
         }
+    }
+
+    public void SetGlobalVolume(float volume)
+    {
+        globalVolume = volume;
+        PlayerPrefs.SetFloat("MusicVolume", volume); // Сохраняем глобальную громкость
     }
 
     private void OnDestroy()

@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenuUI;
+    [SerializeField] private GameObject settingsPanel;
 
     private bool _isPaused;
+
+    
 
     private void Update()
     {
@@ -28,6 +32,8 @@ public class PauseMenu : MonoBehaviour
         // Продолжить игру
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f; // Возвращаем время в нормальный ход
+        GameManager.IsBlocked = false;
+        settingsPanel.SetActive(false);
         _isPaused = false;
     }
 
@@ -36,6 +42,7 @@ public class PauseMenu : MonoBehaviour
         // Поставить на паузу
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f; // Останавливаем время
+        GameManager.IsBlocked = true;
         _isPaused = true;
     }
 
@@ -48,14 +55,18 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        // Выйти из игры
-        Debug.Log("Quitting game...");
         Application.Quit();
     }
 
     public void OpenSettings()
     {
         // Здесь можно открыть меню настроек (добавьте свою реализацию)
-        Debug.Log("Opening settings...");
+        settingsPanel.gameObject.SetActive(true);
+    }
+    
+    public void CloseSettings()
+    {
+        // Здесь можно открыть меню настроек (добавьте свою реализацию)
+        settingsPanel.gameObject.SetActive(false);
     }
 }
