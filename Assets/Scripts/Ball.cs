@@ -108,8 +108,8 @@ public class Ball : MonoBehaviour, ICanBeExploded
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GlobalEventManager.BallOnPocket();
         CurrentPolarity.InteractWithPocket();
+        GlobalEventManager.BallOnPocket();
         Destroy(gameObject);
     }
 

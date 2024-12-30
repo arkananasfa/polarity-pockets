@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cefa10c4fd442f94aa496fb296aadd0f, type: 3}
   m_Name: ChaosBomb
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: e999f11042cd241a38ff7e27c7803480, type: 3}
+  icon: {fileID: 3105877725731954320, guid: b497baf8c22348c4795f0481a862751d, type: 3}
   name: Chaos Bomb
-  description: Beat all balls in random directions
+  description: Hit balls in random directions
   price: 2
   type: 3

@@ -8,22 +8,29 @@ public class CocktailElement : MonoBehaviour
 {
     
     [SerializeField] private Image iconImage;
-    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private Image reflectionImage;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI costText;
 
     private Button _button;
     private int _price;
     private CocktailType _type;
-    
+
+    private void Awake()
+    {
+        _button = GetComponent<Button>();
+    }
+
     public CocktailElement Init(CocktailModel model)
     {
+        gameObject.SetActive(true);
         iconImage.sprite = model.icon;
-        nameText.text = model.name;
+        reflectionImage.sprite = model.icon;
         descriptionText.text = model.description;
-        costText.text = model.price.ToString();
-        _button = GetComponent<Button>();
-        _button.onClick.AddListener(BuyCocktail);
+        costText.text = model.price.ToString() + "$";
+
+        iconImage.preserveAspect = model.type == CocktailType.ReversePolarity || model.type == CocktailType.ChaosBomb;
+        reflectionImage.preserveAspect = model.type == CocktailType.ReversePolarity || model.type == CocktailType.ChaosBomb;
         
         _price = model.price;
         _type = model.type;
@@ -35,11 +42,13 @@ public class CocktailElement : MonoBehaviour
     private void OnEnable()
     {
         ResourcesManager.Money.OnValueChanged += CheckIsAvailable;
+        _button.onClick.AddListener(BuyCocktail);
     }
 
     private void OnDisable()
     {
         ResourcesManager.Money.OnValueChanged -= CheckIsAvailable;
+        _button.onClick.RemoveListener(BuyCocktail);
     }
 
     private void CheckIsAvailable(int money)
@@ -51,7 +60,7 @@ public class CocktailElement : MonoBehaviour
     {
         ResourcesManager.Money.Value-= _price;
         CocktailsStorage.instance.AddCocktail(_type);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cefa10c4fd442f94aa496fb296aadd0f, type: 3}
   m_Name: PocketPlus
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: a1570f9e78ea547af91f28afa5335c03, type: 3}
+  icon: {fileID: -8079357727930904666, guid: 53ad812eb61d95446917e5ff236d0ec1, type: 3}
   name: Plus Pocket
   description: Add one more pocket
   price: 4

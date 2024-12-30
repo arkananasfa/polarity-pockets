@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cefa10c4fd442f94aa496fb296aadd0f, type: 3}
   m_Name: Teleporter
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 44f2803dad0404cbeb9ee038d70da104, type: 3}
+  icon: {fileID: 6413734476913471024, guid: 9d5049b1cda25c34884010156f6ad043, type: 3}
   name: Teleporter
-  description: Teleports ball to location you choose
+  description: Place a ball anywhere
   price: 3
   type: 2

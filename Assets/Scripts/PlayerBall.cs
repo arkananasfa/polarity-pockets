@@ -50,6 +50,7 @@ public class PlayerBall : MonoBehaviour, ICanBeExploded
         {
             _tl.EndLine();
             predictionLine.positionCount = 0;
+            predictionLine2.positionCount = 0;
             _flag = false;
             return;
         }
@@ -117,6 +118,7 @@ public class PlayerBall : MonoBehaviour, ICanBeExploded
             _rb.AddForce(_force * powerMultiplier, ForceMode2D.Impulse);
             _tl.EndLine();
             predictionLine.positionCount = 0;
+            predictionLine2.positionCount = 0;
             _flag = false;
             if (_force.magnitude > 0.03f)
                 ResourcesManager.Tries.Value--;
@@ -136,7 +138,7 @@ public class PlayerBall : MonoBehaviour, ICanBeExploded
         _isOutOfBoard = true;
     }
 
-    private void RenderPredictionLine(Vector2[] trajectory)
+    /*private void RenderPredictionLine(Vector2[] trajectory)
     {
         predictionLine.positionCount = trajectory.Length;
         Vector3[] positions = new Vector3[trajectory.Length];
@@ -145,19 +147,51 @@ public class PlayerBall : MonoBehaviour, ICanBeExploded
             positions[i] = new Vector3(trajectory[i].x, trajectory[i].y, 15f);
         }
         predictionLine.SetPositions(positions);
-    }
+    }*/
 
     public void PlotWithCollisions(Vector2 direction)
     {
+        //1
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 1000f, collisionMask);
 
         Vector3[] results = new Vector3[2];
         results[0] = transform.position;
         results[1] = hit.point;
-
+        
+        predictionLine.positionCount = 2;
         predictionLine.SetPositions(results);
+        
+        //2
+        RaycastHit2D hit2 = Physics2D.CircleCast(transform.position, 0.272f, direction, 1000f, collisionMask);
+        if (hit2.collider != null)
+        {
+            if (hit2.collider.gameObject.TryGetComponent(out Ball ball))
+            {
+                Vector2 direct = (Vector2)ball.transform.position - hit2.point;
+                ball.gameObject.layer = LayerMask.NameToLayer("PB");
+                RaycastHit2D hit3 = Physics2D.Raycast(ball.transform.position, direct, 1000f, collisionMask);
+                ball.gameObject.layer = LayerMask.NameToLayer("Balls");
+                
+                Vector3[] results2 = new Vector3[2];
+                results2[0] = ball.transform.position;
+                results2[1] = hit3.point;
+                
+                predictionLine2.positionCount = 2;
+                predictionLine2.SetPositions(results2);
+            }
+            else
+            {
+                predictionLine2.positionCount = 0;
+            }
+        }
     }
 
+    /*[SerializeField] private float rad = 0.55f;
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, rad);
+    }*/
 
 
     // public void ShowPredictionLine(Vector2 startPoint, Vector2 velocity)

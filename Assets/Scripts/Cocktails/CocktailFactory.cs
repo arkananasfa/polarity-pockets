@@ -7,6 +7,8 @@ public static class CocktailFactory
     {
         CocktailType.Teleport => new Teleport(),
         CocktailType.ReversePolarity => new ReversePolarity(),
+        CocktailType.PocketPlus => new PocketPlus(),
+        CocktailType.ChaosBomb => new ChaosBomb(),
         _ => new Teleport()
     };
 

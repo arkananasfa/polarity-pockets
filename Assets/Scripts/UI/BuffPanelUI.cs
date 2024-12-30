@@ -19,15 +19,19 @@ public class BuffPanelUI : MonoBehaviour
 
     private Coroutine animationCoroutine;
     private bool isPanelOpen = false; 
+    
+    private List<Cocktail> usedCocktails = new();
 
     private void OnEnable()
     {
         GlobalEventManager.OnBackToGameButtonClicked += UpdateBuffPanel;
+        GlobalEventManager.OnGoToShopButtonClicked += EndEffects;
     }
 
     private void OnDisable()
     {
         GlobalEventManager.OnBackToGameButtonClicked -= UpdateBuffPanel;
+        GlobalEventManager.OnGoToShopButtonClicked -= EndEffects;
     }
 
     private void Start()
@@ -59,10 +63,18 @@ public class BuffPanelUI : MonoBehaviour
         }
         if (CocktailsStorage.instance.cocktails[cocktailType] > 0)
         {
-            CocktailFactory.GetCocktail(cocktailType).Use();
+            Cocktail cocktail = CocktailFactory.GetCocktail(cocktailType);
+            usedCocktails.Add(cocktail);
+            cocktail.Use();
             CocktailsStorage.instance.cocktails[cocktailType]--;
             UpdateBuffPanel();
         }
+    }
+
+    private void EndEffects()
+    {
+        usedCocktails.ForEach(c => c.End());
+        usedCocktails.Clear();
     }
 
     // Обновление UI панели

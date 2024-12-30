@@ -10,7 +10,6 @@ public class CocktailsStorage : MonoBehaviour
     #region singleton
 
     public static CocktailsStorage instance;
-    
 
     private void Awake()
     {

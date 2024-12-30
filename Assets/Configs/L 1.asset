@@ -19,4 +19,4 @@ MonoBehaviour:
     percent: 50
   - polarityType: 2
     percent: 10
-  startTries: 15
+  startTries: 10

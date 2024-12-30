@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cefa10c4fd442f94aa496fb296aadd0f, type: 3}
   m_Name: ReversePolarity
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b7d7e36f0c41c4316a6ea75d0a9321a6, type: 3}
+  icon: {fileID: -22777379820428541, guid: 5ff05e87ab899dc41a960a956c7cfbda, type: 3}
   name: Reverse polarity
-  description: Reverse all balls polarity
+  description: Reverse the polarity of balls
   price: 2
   type: 0

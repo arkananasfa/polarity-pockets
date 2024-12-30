@@ -19,7 +19,7 @@ public class ShopUI : MonoBehaviour
 
     #endregion
     
-    [SerializeField] private CocktailElement cocktailElementPrefab;
+    [SerializeField] private List<CocktailElement> cocktailElements;
     [SerializeField] private RectTransform container;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private CanvasGroup canvasGroup;
@@ -39,12 +39,9 @@ public class ShopUI : MonoBehaviour
         canvasGroup.DOFade(1f, 0.6f);
         shopPanel.SetActive(true);
         var cocktails = GetThreeRandomCocktails();
-        foreach (var cocktail in cocktails)
-        {
-            CocktailElement element = Instantiate(cocktailElementPrefab, container);
-            element.Init(cocktail);
-            _cocktailElements.Add(element);
-        }
+        int i = 0;
+        foreach (var element in cocktailElements)
+            element.Init(cocktails[i++]);
     }
 
     private CocktailModel[] GetThreeRandomCocktails()

@@ -7,7 +7,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
+    public static bool hintIsShown = false;
     public static bool IsBlocked = false;
+
+    [SerializeField] private GameObject infoPanel; 
     
     [Header("Player")]
     [SerializeField] private PlayerBall playerBall;
@@ -25,6 +28,8 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
+        if (!hintIsShown)
+            ShowInfoPanel();
         ResourcesManager.Tries.OnValueChanged += CheckLose;
         GlobalEventManager.OnBallOnPocket += CheckWin;
         GlobalEventManager.OnBackToGameButtonClicked += StartNextLevel;
@@ -39,6 +44,21 @@ public class GameManager : MonoBehaviour
     {
         currentRound.Value++;
         StartLevel();
+    }
+
+    public void ShowInfoPanel()
+    {
+        if (IsBlocked)
+            return;
+        infoPanel.gameObject.SetActive(true);
+        IsBlocked = true;
+        hintIsShown = true;
+    }
+
+    public void HideInfoPanel()
+    {
+        infoPanel.gameObject.SetActive(false);
+        IsBlocked = false;
     }
     
     private void StartLevel()

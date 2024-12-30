@@ -20,7 +20,7 @@ MonoBehaviour:
   - polarityType: 2
     percent: 10
   - polarityType: 5
-    percent: 15
-  - polarityType: 3
     percent: 20
-  startTries: 15
+  - polarityType: 3
+    percent: 15
+  startTries: 10
